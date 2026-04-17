@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import CMP from "../../assets/cmp.mp4";
-import API from "../../assets/api.mp4";
+import CMP from "../../assets/CMP.mp4";
+import API from "../../assets/API.mp4";
 import { MdArrowOutward } from "react-icons/md";
 import SplitText from "../../Animation/SplitText";
 import RevealDelay from "../../Animation/RevealDelay";
