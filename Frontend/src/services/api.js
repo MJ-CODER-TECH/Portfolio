@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Use environment variable or default to localhost
-const API_URL = import.meta.env.VITE_API_URL || 'https://admin-mjcoder.vercel.app/api';
+const API_URL = import.meta.env.VITE_API_URL || 'https://mj-coder-tech-agency.onrender.com/api';
 
 const API = axios.create({
   baseURL: API_URL,
