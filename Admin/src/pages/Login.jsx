@@ -15,12 +15,17 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
       const res = await login(form);
       const { token, user } = res.data;
+
       signin(token, user);
+
       toast.success('Welcome back! 👋');
-      navigate('/');
+
+      navigate('/', { replace: true });
+
     } catch (err) {
       toast.error(err.response?.data?.message || 'Invalid credentials');
     } finally {

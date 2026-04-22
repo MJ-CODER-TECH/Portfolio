@@ -9,11 +9,21 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const token = localStorage.getItem('admin_token');
+
     if (token) {
+      // Verify token with backend
       getMe()
-        .then((res) => setUser(res.data))
-        .catch(() => localStorage.removeItem('admin_token'))
-        .finally(() => setLoading(false));
+        .then((res) => {
+          setUser(res.data);
+        })
+        .catch(() => {
+          // Token invalid, clear it
+          localStorage.removeItem('admin_token');
+          setUser(null);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     } else {
       setLoading(false);
     }
