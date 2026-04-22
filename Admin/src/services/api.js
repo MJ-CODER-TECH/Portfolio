@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://admin-mjcoder.vercel.app/api',
+  baseURL: 'https://mj-coder-tech-agency.onrender.com/api',
 });
 
 API.interceptors.request.use((config) => {
