@@ -1,5 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
 import Navbar from './components/Header/Navbar'
 import Home from './pages/Home'
 import About from './pages/About'
@@ -13,7 +14,8 @@ import PrivacyPolicy from './pages/Policy'
 const App = () => {
   return (
     <BrowserRouter>
-    <ScrollToTop/>
+      <Toaster position="top-right" />
+      <ScrollToTop/>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

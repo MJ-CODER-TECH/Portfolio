@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 import Footer from "../components/Footer/Footer";
+import { submitContact } from "../services/api";
 
 const Contact = () => {
   const [form, setForm] = useState({
@@ -8,18 +10,27 @@ const Contact = () => {
     subject: "",
     message: "",
   });
-  const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form);
-    setSent(true);
-    setForm({ name: "", email: "", subject: "", message: "" });
-    setTimeout(() => setSent(false), 4000);
+    setLoading(true);
+
+    try {
+      await submitContact(form);
+      toast.success("Message sent! We'll get back to you soon.");
+      setForm({ name: "", email: "", subject: "", message: "" });
+    } catch (error) {
+      const message = error.response?.data?.message || "Failed to send message. Please try again.";
+      toast.error(message);
+      console.error("Contact submission error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -152,31 +163,23 @@ const Contact = () => {
             {/* Submit */}
             <button
               type="submit"
-              className="w-full mt-1 py-3 bg-green-400 text-[#020d04] font-syne font-bold text-sm tracking-wide rounded-[10px] flex items-center justify-center gap-2 hover:bg-green-300 active:scale-[0.98] transition-all"
+              disabled={loading}
+              className="w-full mt-1 py-3 bg-green-400 text-[#020d04] font-syne font-bold text-sm tracking-wide rounded-[10px] flex items-center justify-center gap-2 hover:bg-green-300 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Send Message
-              <svg className="w-3.5 h-3.5 stroke-[#020d04]" viewBox="0 0 24 24" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
-              </svg>
-            </button>
-
-            {/* Success Banner */}
-            {sent && (
-              <div className="flex items-center gap-2.5 bg-green-400/5 border border-green-400/15 rounded-[10px] px-4 py-3 text-sm text-green-400">
-                <svg className="w-4 h-4 stroke-green-400 shrink-0" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="20 6 9 17 4 12"/>
+              {loading ? "Sending..." : "Send Message"}
+              {!loading && (
+                <svg className="w-3.5 h-3.5 stroke-[#020d04]" viewBox="0 0 24 24" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
                 </svg>
-                Message sent! I'll get back to you soon.
-              </div>
-            )}
+              )}
+            </button>
           </form>
         </div>
 
       </div>
     </section>
-          <Footer/>
-          </>
-
+    <Footer />
+    </>
   );
 };
 

@@ -1,9 +1,71 @@
 @import "tailwindcss";
 
-body {
-  background: #050505;
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #050505;
+    color: #f5f5f5;
+    font-family: 'Outfit', sans-serif;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0d0d0d;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #1f1f1f;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #22c55e;
+  }
 }
 
-* {
-  user-select: none;
+@layer components {
+  .card {
+    @apply bg-[#0d0d0d] border border-[#1f1f1f] rounded-xl p-5;
+  }
+
+  .btn-primary {
+    @apply bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-2 text-sm;
+  }
+
+  .btn-secondary {
+    @apply bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-lg font-medium transition-all duration-200;
+  }
+
+  .input-field {
+    @apply bg-[#0a0a0a] border border-[#1d1d1d] text-[#f5f5f5] rounded-[10px] px-3.5 py-3 text-sm placeholder-[#5a5a5a] outline-none focus:border-green-400/60 focus:bg-[#0f0f0f] transition-all;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold text-[#f5f5f5];
+  }
+
+  .section-subtitle {
+    @apply text-[#b0b0b0] text-base md:text-lg;
+  }
+
+  .badge-primary {
+    @apply inline-block text-[11px] tracking-[0.15em] uppercase text-green-400 bg-green-400/10 border border-green-400/20 px-3 py-1 rounded-full;
+  }
+
+  .badge-secondary {
+    @apply inline-block text-xs px-2 py-1 rounded-full font-medium bg-slate-800 text-slate-300;
+  }
 }
