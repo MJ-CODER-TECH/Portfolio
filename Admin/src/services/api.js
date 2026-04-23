@@ -1,6 +1,11 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://mj-coder-tech-agency.onrender.com/api';
+const rawApiUrl = import.meta.env.VITE_API_URL || 'https://mj-coder-tech-agency.onrender.com/api';
+const normalizeApiUrl = (url) => {
+  const trimmed = url.trim().replace(/\/+$|\s+$/g, '');
+  return trimmed.endsWith('/api') ? trimmed : `${trimmed}/api`;
+};
+const API_URL = normalizeApiUrl(rawApiUrl);
 
 const API = axios.create({
   baseURL: API_URL,

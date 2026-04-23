@@ -3,6 +3,7 @@ import { Star, Trash2, Check, X, Clock } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { getReviews, approveReview, deleteReview } from '../services/api';
 
+// ⭐ Stars Component
 function Stars({ count }) {
   return (
     <div className="flex items-center gap-0.5">
@@ -23,13 +24,15 @@ export default function Reviews() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
 
-  // Load Reviews
+  // 📦 Fetch Reviews
   const fetchReviews = async () => {
     try {
       setLoading(true);
       const res = await getReviews();
-const data = res.data?.data || res.data?.reviews || res.data || [];
-setReviews(Array.isArray(data) ? data : []);    } catch (err) {
+
+      const data = res.data?.data || res.data?.reviews || res.data || [];
+      setReviews(Array.isArray(data) ? data : []);
+    } catch (err) {
       toast.error('Failed to load reviews');
     } finally {
       setLoading(false);
@@ -40,31 +43,31 @@ setReviews(Array.isArray(data) ? data : []);    } catch (err) {
     fetchReviews();
   }, []);
 
-  // ✅ Optimized Approve Toggle (no full refetch)
+  // ✅ Toggle Approve (Optimistic UI)
   const handleApprove = async (rev) => {
     const prevState = [...reviews];
 
     try {
-     const updated = reviews.map(r =>
-  r._id === rev._id
-    ? { ...r, isApproved: !r.isApproved }
-    : r
-);
+      const updated = reviews.map(r =>
+        r._id === rev._id
+          ? { ...r, isApproved: !r.isApproved }
+          : r
+      );
 
-      setReviews(updated); // optimistic UI
+      setReviews(updated);
 
       await approveReview(rev._id);
 
       toast.success(
-        rev.approved ? 'Review unapproved' : 'Review approved!'
+        rev.isApproved ? 'Review unapproved' : 'Review approved!'
       );
     } catch (err) {
-      setReviews(prevState); // rollback
+      setReviews(prevState);
       toast.error('Failed to update review');
     }
   };
 
-  // ✅ Optimized Delete (no refetch)
+  // 🗑 Delete Review
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this review?')) return;
 
@@ -72,33 +75,36 @@ setReviews(Array.isArray(data) ? data : []);    } catch (err) {
 
     try {
       setReviews(reviews.filter(r => r._id !== id));
-
       await deleteReview(id);
       toast.success('Review deleted');
     } catch (err) {
-      setReviews(prev); // rollback
+      setReviews(prev);
       toast.error('Failed to delete');
     }
   };
 
+  // 🔍 Filter Logic (FIXED)
   const filtered = reviews.filter(r => {
-    const isApproved = r.isApproved || r.isApproved;
-    if (filter === 'pending') return !isApproved;
-    if (filter === 'approved') return isApproved;
+    if (filter === 'pending') return !r.isApproved;
+    if (filter === 'approved') return r.isApproved;
     return true;
   });
 
-const pendingCount = reviews.filter(r => !r.isApproved).length;
+  const pendingCount = reviews.filter(r => !r.isApproved).length;
+
   return (
     <div className="animate-fade-in">
+
+      {/* Header */}
       <div className="section-header flex-wrap gap-3">
         <div>
           <h1 className="page-title">Reviews</h1>
           <p className="text-sm text-slate-500">
-            {reviews.length} total reviews
+            {reviews.length} total reviews • {pendingCount} pending
           </p>
         </div>
 
+        {/* Filter Buttons */}
         <div className="flex gap-2">
           {['all', 'pending', 'approved'].map(f => (
             <button
@@ -129,8 +135,9 @@ const pendingCount = reviews.filter(r => !r.isApproved).length;
         </div>
       ) : (
         <div className="grid md:grid-cols-2 gap-4">
+
           {filtered.map(rev => {
-            const isApproved = rev.approved || rev.isApproved;
+            const isApproved = rev.isApproved;
 
             return (
               <div
@@ -141,9 +148,11 @@ const pendingCount = reviews.filter(r => !r.isApproved).length;
                     : 'border-yellow-500/20'
                 }`}
               >
+
                 {/* Header */}
                 <div className="flex justify-between">
                   <div className="flex gap-3">
+
                     <div className="w-9 h-9 rounded-full bg-dark-600 flex items-center justify-center font-bold">
                       {rev.name?.charAt(0)?.toUpperCase() || '?'}
                     </div>
@@ -173,11 +182,7 @@ const pendingCount = reviews.filter(r => !r.isApproved).length;
                       onClick={() => handleApprove(rev)}
                       className="text-green-400"
                     >
-                      {isApproved ? (
-                        <X size={16} />
-                      ) : (
-                        <Check size={16} />
-                      )}
+                      {isApproved ? <X size={16} /> : <Check size={16} />}
                     </button>
 
                     <button
@@ -203,9 +208,11 @@ const pendingCount = reviews.filter(r => !r.isApproved).length;
                     ? new Date(rev.createdAt).toLocaleDateString()
                     : 'Recently'}
                 </div>
+
               </div>
             );
           })}
+
         </div>
       )}
     </div>
