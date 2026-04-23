@@ -19,4 +19,7 @@ export const getReviews = () => API.get('/reviews');
 // ─── Plans Endpoints (for pricing page) ───────────────────────────────────────
 export const getPlans = () => API.get('/plans');
 
+export const getBlogs = () => API.get('/blogs');
+
+
 export default API;

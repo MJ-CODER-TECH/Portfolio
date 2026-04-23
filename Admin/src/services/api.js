@@ -47,12 +47,20 @@ export const deletePlan = (id) => API.delete(`/plans/${id}`);
 
 // Reviews
 export const getReviews = () => API.get('/reviews');
+export const getReviewsAdmin = () => API.get('/reviews/admin/all');
 export const approveReview = (id) => API.put(`/reviews/${id}/approve`);
-export const deleteReview = (id) => API.delete(`/reviews/${id}`);
+export const deleteReview = (id) => API.delete(`/reviews/${id}`); // ✅ FIXED - uncommented
 
 // Contact
 export const getContacts = () => API.get('/contact');
 export const updateContactStatus = (id, status) => API.put(`/contact/${id}/status`, { status });
 export const deleteContact = (id) => API.delete(`/contact/${id}`);
+
+// Blogs
+export const getBlogs = () => API.get('/blogs');
+export const getBlogsAdmin = () => API.get('/blogs/admin/all');
+export const createBlog = (data) => API.post('/blogs', data);
+export const updateBlog = (id, data) => API.put(`/blogs/${id}`, data);
+export const deleteBlog = (id) => API.delete(`/blogs/${id}`);
 
 export default API;

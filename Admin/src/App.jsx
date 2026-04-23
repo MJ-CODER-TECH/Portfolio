@@ -10,6 +10,7 @@ import Projects from './pages/Projects';
 import Plans from './pages/Plans';
 import Reviews from './pages/Reviews';
 import Contact from './pages/Contact';
+import Blogs from './pages/Blogs';
 import Settings from './pages/Settings';
 
 export default function App() {
@@ -33,6 +34,7 @@ export default function App() {
           <Route path="plans" element={<Plans />} />
           <Route path="reviews" element={<Reviews />} />
           <Route path="contact" element={<Contact />} />
+          <Route path="blogs" element={<Blogs />} />
           <Route path="settings" element={<Settings />} />
         </Route>
 

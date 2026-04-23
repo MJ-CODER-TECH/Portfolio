@@ -8,6 +8,8 @@ const planRoutes = require('./routes/plan.routes');
 const projectRoutes = require('./routes/project.routes');
 const reviewRoutes = require('./routes/review.routes');
 const contactRoutes = require('./routes/contact.routes');
+const blogRoutes = require('./routes/blog.routes');
+
 
 const { errorHandler } = require('./middlewares/error.middleware');
 
@@ -37,6 +39,8 @@ app.use('/api/plans', planRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/blogs', blogRoutes);
+
 
 app.get('/', (req, res) => {
   res.json({

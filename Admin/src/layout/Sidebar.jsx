@@ -9,6 +9,7 @@ export default function Sidebar() {
     { label: 'Plans', to: '/admin/plans' },
     { label: 'Reviews', to: '/admin/reviews' },
     { label: 'Messages', to: '/admin/messages' },
+    { label: 'Blogs', to: '/admin/blogs' },
     { label: 'Settings', to: '/admin/settings' },
   ];
 

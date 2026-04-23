@@ -15,6 +15,7 @@ const NAV = [
   { to: '/plans',    icon: CreditCard,      label: 'Plans'     },
   { to: '/reviews',  icon: Star,            label: 'Reviews'   },
   { to: '/contact',  icon: MessageSquare,   label: 'Contact'   },
+  { to: '/blogs',    icon: Code2,           label: 'Blogs'     },
   { to: '/settings', icon: Settings,        label: 'Settings'  },
 ];
 

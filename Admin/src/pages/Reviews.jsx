@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Star, Trash2, Check, X, Clock } from 'lucide-react';
 import { toast } from 'react-hot-toast';
-import { getReviews, approveReview, deleteReview } from '../services/api';
+import {
+  getReviewsAdmin,
+  approveReview,
+  deleteReview
+} from '../services/api';
 
 // ⭐ Stars Component
 function Stars({ count }) {
@@ -11,7 +15,9 @@ function Stars({ count }) {
         <Star
           key={i}
           className={`w-3 h-3 ${
-            i <= count ? 'text-yellow-400 fill-yellow-400' : 'text-slate-600'
+            i <= count
+              ? 'text-yellow-400 fill-yellow-400'
+              : 'text-slate-600'
           }`}
         />
       ))}
@@ -24,14 +30,16 @@ export default function Reviews() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
 
-  // 📦 Fetch Reviews
+  // 📦 Fetch ADMIN Reviews (FIXED)
   const fetchReviews = async () => {
     try {
       setLoading(true);
-      const res = await getReviews();
 
-      const data = res.data?.data || res.data?.reviews || res.data || [];
+      const res = await getReviewsAdmin(); // 🔥 IMPORTANT FIX
+
+      const data = res.data?.data || [];
       setReviews(Array.isArray(data) ? data : []);
+
     } catch (err) {
       toast.error('Failed to load reviews');
     } finally {
@@ -43,31 +51,33 @@ export default function Reviews() {
     fetchReviews();
   }, []);
 
-  // ✅ Toggle Approve (Optimistic UI)
+  // ✅ Approve / Unapprove
   const handleApprove = async (rev) => {
-    const prevState = [...reviews];
+    const prev = [...reviews];
 
     try {
-      const updated = reviews.map(r =>
+      // Optimistic update
+      setReviews(prev.map(r =>
         r._id === rev._id
           ? { ...r, isApproved: !r.isApproved }
           : r
-      );
-
-      setReviews(updated);
+      ));
 
       await approveReview(rev._id);
 
       toast.success(
-        rev.isApproved ? 'Review unapproved' : 'Review approved!'
+        rev.isApproved
+          ? 'Review unapproved'
+          : 'Review approved!'
       );
+
     } catch (err) {
-      setReviews(prevState);
+      setReviews(prev);
       toast.error('Failed to update review');
     }
   };
 
-  // 🗑 Delete Review
+  // 🗑 Delete
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this review?')) return;
 
@@ -75,7 +85,9 @@ export default function Reviews() {
 
     try {
       setReviews(reviews.filter(r => r._id !== id));
+
       await deleteReview(id);
+
       toast.success('Review deleted');
     } catch (err) {
       setReviews(prev);
@@ -83,7 +95,7 @@ export default function Reviews() {
     }
   };
 
-  // 🔍 Filter Logic (FIXED)
+  // 🔍 Filter
   const filtered = reviews.filter(r => {
     if (filter === 'pending') return !r.isApproved;
     if (filter === 'approved') return r.isApproved;
@@ -95,7 +107,7 @@ export default function Reviews() {
   return (
     <div className="animate-fade-in">
 
-      {/* Header */}
+      {/* HEADER */}
       <div className="section-header flex-wrap gap-3">
         <div>
           <h1 className="page-title">Reviews</h1>
@@ -104,7 +116,7 @@ export default function Reviews() {
           </p>
         </div>
 
-        {/* Filter Buttons */}
+        {/* FILTER */}
         <div className="flex gap-2">
           {['all', 'pending', 'approved'].map(f => (
             <button
@@ -122,7 +134,7 @@ export default function Reviews() {
         </div>
       </div>
 
-      {/* Loading */}
+      {/* LOADING */}
       {loading ? (
         <div className="space-y-3">
           {[1, 2, 3].map(i => (
@@ -149,7 +161,7 @@ export default function Reviews() {
                 }`}
               >
 
-                {/* Header */}
+                {/* HEADER */}
                 <div className="flex justify-between">
                   <div className="flex gap-3">
 
@@ -176,7 +188,7 @@ export default function Reviews() {
                     </div>
                   </div>
 
-                  {/* Actions */}
+                  {/* ACTIONS */}
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleApprove(rev)}
@@ -194,14 +206,14 @@ export default function Reviews() {
                   </div>
                 </div>
 
-                {/* Message */}
+                {/* MESSAGE */}
                 {rev.message && (
                   <p className="text-xs text-slate-400 mt-3 border-t pt-3">
                     "{rev.message}"
                   </p>
                 )}
 
-                {/* Date */}
+                {/* DATE */}
                 <div className="flex items-center gap-1 mt-2 text-xs text-slate-600">
                   <Clock size={12} />
                   {rev.createdAt
