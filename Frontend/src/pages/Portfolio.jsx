@@ -1,6 +1,9 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import Footer from "../components/Footer/Footer";
+import { getProjects } from "../services/api";
+import {useNavigate} from "react-router-dom"
+
 
 const Portfolio = () => {
   const heroRef = useRef()
@@ -8,6 +11,19 @@ const Portfolio = () => {
   const aboutRef = useRef()
   const skillsRef = useRef()
   const projectsRef = useRef()
+  const projects = getProjects()
+  const navigate = useNavigate()
+
+  const [projectsData, setProjectsData] = useState([])
+
+  useEffect(()=>{
+    getProjects().then(res =>{
+      setProjectsData(res.data.data)
+      console.log(res.data.data)
+    } )
+  } , [])
+
+
 
   const heroInView = useInView(heroRef, { once: true, margin: "-100px" })
   const aboutInView = useInView(aboutRef, { once: true, margin: "-100px" })
@@ -167,32 +183,47 @@ const Portfolio = () => {
           transition={{ staggerChildren: 0.1, delayChildren: 0.2 }}
         >
 
-          {[1,2,3].map((item) => (
-            <motion.div
-              key={item}
-              initial={{ opacity: 0, y: 30, scale: 0.95 }}
-              animate={projectsInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-              transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
-              className="bg-[#111] rounded-xl overflow-hidden hover:scale-105 transition">
-              <img src={`/project${item}.jpg`} className="w-full h-48 object-cover" />
-              <div className="p-5">
-                <h3 className="font-semibold text-lg mb-2">Project Title</h3>
-                <p className="text-gray-400 text-sm mb-3">
-                  Full stack application with authentication, dashboard, and API integration.
-                </p>
+          {projectsData.map((item) => (
+  <motion.div
+    onClick={() => navigate(`/project/${item._id}`)}
 
-                {/* Tech Tags */}
-                <div className="flex flex-wrap gap-2 mb-3">
-                  <span className="text-xs bg-green-400/10 text-green-400 px-2 py-1 rounded">React</span>
-                  <span className="text-xs bg-green-400/10 text-green-400 px-2 py-1 rounded">Node</span>
-                  <span className="text-xs bg-green-400/10 text-green-400 px-2 py-1 rounded">MongoDB</span>
-                </div>
+    key={item._id}
+    initial={{ opacity: 0, y: 30, scale: 0.95 }}
+    animate={projectsInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+    transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
+    className="bg-[#111] rounded-xl overflow-hidden hover:scale-105 transition flex flex-col h-full">
+    
+    <img 
+      src={item.thumbnail} 
+      className="w-full h-48 object-cover flex-shrink-0" 
+    />
+    
+    <div className="p-5 flex flex-col flex-1">
+      <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
+      
+      <p className="text-gray-400 text-sm mb-3 flex-1 line-clamp-3">
+        {item.description}
+      </p>
 
-                <button className="text-green-400 text-sm">View Project →</button>
-              </div>
-            </motion.div>
-          ))}
+      {/* Tech Tags */}
+      <div className="flex flex-wrap gap-2 mb-4">
+        {item.techStack?.map((tech, i) => (
+          <span key={i} className="text-xs bg-green-400/10 text-green-400 px-2 py-1 rounded">
+            {tech}
+          </span>
+        ))}
+      </div>
 
+      <a 
+        href={item.liveUrl} 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="text-green-400 text-sm mt-auto">
+        View Project →
+      </a>
+    </div>
+  </motion.div>
+))}
         </motion.div>
       </motion.section>
 

@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL || 'https://mj-coder-tech-agency.onrender.com/api';
+
 const API = axios.create({
-  baseURL: 'https://mj-coder-tech-agency.onrender.com/api',
+  baseURL: API_URL,
 });
 
 API.interceptors.request.use((config) => {
