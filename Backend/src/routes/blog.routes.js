@@ -4,11 +4,12 @@ const {
   getBlogs, getAllBlogsAdmin, createBlog, updateBlog, deleteBlog
 } = require('../controllers/blog.controller');
 const { protect } = require('../middlewares/auth.middleware');
+const upload = require('../config/multer'); // your existing multer-cloudinary config
 
-router.get('/', getBlogs);                        // Public
-router.get('/admin/all', protect, getAllBlogsAdmin); // Admin
-router.post('/', protect, createBlog);            // Admin
-router.put('/:id', protect, updateBlog);          // Admin
-router.delete('/:id', protect, deleteBlog);       // Admin
+router.get('/', getBlogs);                                          // Public
+router.get('/admin/all', protect, getAllBlogsAdmin);                // Admin
+router.post('/', protect, upload.single('image'), createBlog);     // Admin — file upload
+router.put('/:id', protect, upload.single('image'), updateBlog);   // Admin — file upload
+router.delete('/:id', protect, deleteBlog);                        // Admin
 
 module.exports = router;

@@ -16,19 +16,64 @@ const getAllBlogsAdmin = async (req, res, next) => {
   } catch (error) { next(error); }
 };
 
-const createBlog = async (req, res, next) => {
+const createBlog = async (req, res) => {
   try {
-    const blog = await Blog.create(req.body);
+    const { title, content, isActive } = req.body;
+
+    if (!title || !content) {
+      return res.status(400).json({
+        success: false,
+        message: 'Title and content required',
+      });
+    }
+
+    const image = req.file ? req.file.path : null;
+
+    const blog = await Blog.create({
+      title,
+      content,
+      isActive: isActive === 'false' ? false : true,
+      image,
+    });
+
     res.status(201).json({ success: true, data: blog });
-  } catch (error) { next(error); }
+  } catch (error) {
+    console.error(error); // ✅ debug
+    res.status(500).json({
+      success: false,
+      message: 'Server Error',
+    });
+  }
 };
 
 const updateBlog = async (req, res, next) => {
   try {
-    const blog = await Blog.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!blog) return res.status(404).json({ success: false, message: 'Not found' });
+    const { title, content, isActive } = req.body;
+
+    const updateData = {
+      title,
+      content,
+      isActive: isActive === 'false' ? false : true,
+    };
+
+    if (req.file) {
+      updateData.image = req.file.path;
+    }
+
+    const blog = await Blog.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true, runValidators: true }
+    );
+
+    if (!blog) {
+      return res.status(404).json({ success: false });
+    }
+
     res.json({ success: true, data: blog });
-  } catch (error) { next(error); }
+  } catch (error) {
+    next(error);
+  }
 };
 
 const deleteBlog = async (req, res, next) => {
