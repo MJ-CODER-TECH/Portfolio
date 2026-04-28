@@ -77,7 +77,7 @@ const Modal = ({ project, onClose, onSave }) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4"
+      className="fixed inset-0 z-50 flex items-center justify-center  backdrop-blur-sm px-4"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <div className="bg-gray-800 border border-gray-700 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl">
@@ -206,7 +206,7 @@ const Modal = ({ project, onClose, onSave }) => {
             <button
               type="submit"
               disabled={saving}
-              className="flex-1 py-2 rounded-lg text-sm font-medium bg-indigo-600 hover:bg-indigo-500 text-white transition disabled:opacity-50"
+              className="flex-1 py-2 rounded-lg text-sm font-medium bg-[#212121] hover:bg-[#191919] text-white transition disabled:opacity-50"
             >
               {saving ? 'Saving...' : project ? 'Update Project' : 'Create Project'}
             </button>
@@ -274,12 +274,12 @@ const Projects = () => {
       {/* Page Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white">Projects</h1>
+          <h1 className="text-4xl font-bold text-white">Projects</h1>
           <p className="text-sm text-gray-400 mt-0.5">{projects.length} total projects</p>
         </div>
         <button
           onClick={() => setModal('add')}
-          className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium px-4 py-2 rounded-lg transition"
+          className="flex items-center gap-2 bg-[#212121] hover:bg-[#191919] text-white text-sm font-medium px-4 py-2 rounded-lg transition"
         >
           <Plus size={16} /> Add Project
         </button>
@@ -293,8 +293,8 @@ const Projects = () => {
             onClick={() => setCategory(cat)}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
               category === cat
-                ? 'bg-indigo-600 text-white'
-                : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'
+                ? 'bg-[#212121] text-white'
+                : 'bg-[#303030] text-gray-400 hover:text-white hover:bg-[#191919]'
             }`}
           >
             {cat.charAt(0).toUpperCase() + cat.slice(1)}
@@ -338,7 +338,7 @@ const Projects = () => {
             return (
               <div
                 key={proj._id}
-                className="relative bg-gray-800 border border-gray-700 rounded-2xl p-5 flex flex-col gap-3 hover:border-gray-600 transition"
+                className="relative bg-[#212121] border-gray-700 rounded-2xl p-5 flex flex-col gap-3 hover:border-gray-600 transition"
               >
                 {/* Featured Badge */}
                 {proj.featured && (
@@ -349,13 +349,13 @@ const Projects = () => {
 
                 {/* Category + Actions */}
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium text-indigo-400 bg-indigo-500/10 px-2.5 py-1 rounded-full capitalize">
+                  <span className="text-xs font-medium text-white bg-[#303030] px-2.5 py-1 rounded-full capitalize">
                     {proj.category}
                   </span>
                   <div className="flex items-center gap-1">
                     <button
                       onClick={() => setModal(proj)}
-                      className="p-1.5 text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition"
+                      className="p-1.5 text-gray-400 hover:text-white hover:bg-[#303030] rounded-lg transition"
                       aria-label="Edit"
                     >
                       <Pencil size={14} />
@@ -390,12 +390,12 @@ const Projects = () => {
                 {techs.length > 0 && (
                   <div className="flex flex-wrap gap-1.5">
                     {techs.slice(0, 4).map((t) => (
-                      <span key={t} className="text-xs text-gray-300 bg-gray-700 px-2 py-0.5 rounded-md">
+                      <span key={t} className="text-xs text-white italic bg-[#303030] px-2 py-0.5 rounded-md">
                         {t}
                       </span>
                     ))}
                     {techs.length > 4 && (
-                      <span className="text-xs text-gray-500 bg-gray-700 px-2 py-0.5 rounded-md">
+                      <span className="text-xs text-white bg-[#303030] px-2 py-0.5 rounded-md">
                         +{techs.length - 4}
                       </span>
                     )}

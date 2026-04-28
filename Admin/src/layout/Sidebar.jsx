@@ -14,13 +14,13 @@ export default function Sidebar() {
   ];
 
   return (
-    <div className="w-72 min-h-screen p-6 
-      bg-white/5 backdrop-blur-xl border-r border-white/10 
+    <div className="w-96 min-h-screen  
+      bg-white/5 backdrop-blur-xl  border-white/10 
       shadow-xl relative overflow-hidden"
     >
 
       {/* glass shine */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-transparent opacity-40 pointer-events-none" />
+      <div className="absolute   from-white/10 bg-[#212121] rounded-lg opacity-40 pointer-events-none" />
 
       <div className="relative z-10">
         <h2 className="text-2xl font-bold mb-8 text-white">

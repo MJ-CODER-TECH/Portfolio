@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { NavLink, useNavigate, Outlet } from 'react-router-dom';
+import Logo from '../component/logo';
 import {
   LayoutDashboard, FolderKanban, CreditCard, Star,
   MessageSquare, Settings, LogOut, Code2, Menu, X
@@ -34,19 +35,22 @@ const SidebarContent = ({ onClose }) => {
   const avatar = user?.name?.charAt(0)?.toUpperCase() || 'A';
 
   return (
-    <div className="flex flex-col h-full relative z-10">
+    <div className="flex my-2 mx-2 rounded-lg flex-col h-full relative z-10">
 
       {/* Glass shine overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-transparent opacity-40 pointer-events-none" />
+      <div className="absolute  inset-0  bg-[#212121] rounded-lg  pointer-events-none" />
 
       {/* Logo */}
       <div className="relative flex items-center gap-3 px-5 py-5 border-b border-white/10">
-        <div className="w-9 h-9 bg-indigo-500/15 border border-indigo-500/30 rounded-xl flex items-center justify-center">
+        {/* <div className="w-9 h-9 bg-indigo-500/15 border border-indigo-500/30 rounded-xl flex items-center justify-center">
           <Code2 size={18} className="text-indigo-400" />
-        </div>
+                        
+
+        </div> */}
         <div>
-          <p className="text-sm font-bold text-white leading-tight">MJ Coder</p>
-          <p className="text-xs text-slate-400">Admin Panel</p>
+          <p className="text-3xl shadow-lg  font-bold text-white leading-tight">MJ Coder</p>
+
+          {/* <p className="text-xs text-slate-400">Admin Panel</p> */}
         </div>
       </div>
 
@@ -61,14 +65,14 @@ const SidebarContent = ({ onClose }) => {
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
               ${isActive
-                ? 'bg-indigo-500/15 text-indigo-400 border border-indigo-500/20'
-                : 'text-slate-400 hover:bg-slate-700 hover:text-slate-200'
+                ? 'bg-[#303030] text-white'
+                : 'text-slate-400 hover:bg-[#303030] hover:text-slate-200'
               }`
             }
           >
             {({ isActive }) => (
               <>
-                <Icon size={16} className={isActive ? 'text-indigo-400' : ''} />
+                <Icon size={16} className={isActive ? 'text-' : ''} />
                 <span>{label}</span>
               </>
             )}
@@ -114,10 +118,10 @@ export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex h-screen bg-black text-slate-200 overflow-hidden" style={{ fontFamily: "'Outfit', sans-serif" }}>
+    <div className="flex h-screen bg-[#161616] text-slate-200 overflow-hidden" style={{ fontFamily: "'Outfit', sans-serif" }}>
 
       {/* ── Desktop Sidebar ── */}
-      <aside className="hidden lg:flex flex-col w-60 bg-white/5 backdrop-blur-xl border-r border-white/10 shadow-xl relative overflow-hidden shrink-0">
+      <aside className="hidden lg:flex flex-col w-60 backdrop-blur-xl  border-white/10 shadow-xl relative overflow-hidden shrink-0">
         <SidebarContent onClose={undefined} />
       </aside>
 

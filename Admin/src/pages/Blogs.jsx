@@ -25,10 +25,8 @@ export default function Blogs() {
     try {
       const res = await getBlogsAdmin();
       const data = res.data;
-
-      // 💡 smart fallback (no crash ever)
       setBlogs(data.blogs || data.data || data || []);
-    } catch (err) {
+    } catch {
       toast.error('Failed to fetch blogs');
       setBlogs([]);
     }
@@ -47,12 +45,8 @@ export default function Blogs() {
       setLoading(true);
       const res = await fetch(
         `https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload`,
-        {
-          method: 'POST',
-          body: data
-        }
+        { method: 'POST', body: data }
       );
-
       const result = await res.json();
       setForm((prev) => ({ ...prev, image: result.secure_url }));
       toast.success('Image uploaded');
@@ -109,127 +103,145 @@ export default function Blogs() {
   };
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">📝 Blog Manager</h1>
+    <div className="p-6 animate-fade-in">
+
+      {/* HEADER */}
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h1 className="text-4xl font-bold text-white">Blogs</h1>
+          <p className="text-sm text-slate-500 mt-1">
+            {blogs.length} total blogs
+          </p>
+        </div>
+
         <button
           onClick={() => {
             setForm(initialForm);
             setEditingId(null);
             setShowModal(true);
           }}
-          className="flex items-center gap-2 bg-black hover:bg-gray-800 text-white px-5 py-2.5 rounded-xl shadow"
+          className="flex items-center gap-2 bg-[#212121] hover:bg-[#2a2a2a] text-white px-4 py-2 rounded-lg"
         >
-          <Plus size={18} /> New Blog
+          <Plus size={16} /> New Blog
         </button>
       </div>
 
-      {/* Empty State */}
+      {/* EMPTY */}
       {blogs.length === 0 ? (
-        <div className="text-center mt-20 text-gray-500">
-          <p className="text-lg">No blogs yet</p>
-          <p className="text-sm">Start by creating your first blog 🚀</p>
+        <div className="text-center py-16 border border-white/5 bg-[#1a1a1a] rounded-xl">
+          <p className="text-slate-500 text-sm">No blogs found</p>
         </div>
       ) : (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        /* LIST UI (LIKE IMAGE) */
+        <div className="rounded-xl border border-white/5 bg-[#1a1a1a] overflow-hidden">
+
           {blogs.map((blog) => (
             <div
               key={blog._id}
-              className="bg-white rounded-2xl shadow-sm hover:shadow-md transition overflow-hidden"
+              className="flex items-center gap-4 px-4 py-3 border-b border-white/[0.04] hover:bg-white/[0.02] transition last:border-none"
             >
-              {blog.image && (
-                <img
-                  src={blog.image}
-                  alt=""
-                  className="h-44 w-full object-cover"
-                />
-              )}
 
-              <div className="p-4">
-                <h2 className="font-semibold text-lg line-clamp-1">
+              {/* IMAGE */}
+              <div className="w-20 h-14 rounded-md overflow-hidden bg-white/5 flex-shrink-0">
+                {blog.image ? (
+                  <img
+                    src={blog.image}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-xs text-slate-600">
+                    No Image
+                  </div>
+                )}
+              </div>
+
+              {/* CONTENT */}
+              <div className="flex-1 min-w-0">
+                <h2 className="text-[14px] font-medium text-blue-400 truncate">
                   {blog.title}
                 </h2>
 
-                <p className="text-sm text-gray-500 mt-1 line-clamp-3">
+                <p className="text-[12px] text-slate-600 truncate">
                   {blog.content}
                 </p>
 
-                <div className="flex justify-between items-center mt-4">
-                  <button
-                    onClick={() => handleEdit(blog)}
-                    className="text-blue-600 hover:underline flex items-center gap-1"
-                  >
-                    <Pencil size={16} /> Edit
-                  </button>
-
-                  <button
-                    onClick={() => handleDelete(blog._id)}
-                    className="text-red-500 hover:underline flex items-center gap-1"
-                  >
-                    <Trash2 size={16} /> Delete
-                  </button>
-                </div>
+                <p className="text-[11px] text-slate-700 mt-1">
+                  {Math.floor(Math.random() * 1000)} views •{' '}
+                  {Math.floor(Math.random() * 600)} comments
+                </p>
               </div>
+
+              {/* ACTIONS */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => handleEdit(blog)}
+                  className="w-7 h-7 rounded-md border border-white/10 flex items-center justify-center hover:bg-white/5"
+                >
+                  <Pencil size={13} />
+                </button>
+
+                <button
+                  onClick={() => handleDelete(blog._id)}
+                  className="w-7 h-7 rounded-md border border-white/10 flex items-center justify-center hover:bg-white/5 text-red-500"
+                >
+                  <Trash2 size={13} />
+                </button>
+              </div>
+
             </div>
           ))}
+
         </div>
       )}
 
-      {/* Modal */}
+      {/* MODAL */}
       {showModal && (
         <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
-          <div className="bg-white w-full max-w-lg rounded-2xl p-6 shadow-lg animate-fadeIn">
-            <div className="flex justify-between items-center mb-5">
-              <h2 className="text-xl font-semibold">
+          <div className="bg-[#1a1a1a] border border-white/10 w-full max-w-lg rounded-xl p-6">
+
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg text-white">
                 {editingId ? 'Edit Blog' : 'Create Blog'}
               </h2>
-              <X
-                className="cursor-pointer"
-                onClick={() => setShowModal(false)}
-              />
+              <X className="cursor-pointer text-slate-400" onClick={() => setShowModal(false)} />
             </div>
 
             <input
               type="text"
-              placeholder="Blog Title"
-              className="w-full border p-3 rounded-lg mb-3 focus:outline-none focus:ring-2"
+              placeholder="Title"
+              className="w-full bg-[#111] border border-white/10 p-3 rounded-lg mb-3 text-white"
               value={form.title}
-              onChange={(e) =>
-                setForm({ ...form, title: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, title: e.target.value })}
             />
 
             <textarea
-              placeholder="Write your blog content..."
-              className="w-full border p-3 rounded-lg mb-3 focus:outline-none focus:ring-2"
+              placeholder="Content"
+              className="w-full bg-[#111] border border-white/10 p-3 rounded-lg mb-3 text-white"
               rows={5}
               value={form.content}
-              onChange={(e) =>
-                setForm({ ...form, content: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, content: e.target.value })}
             />
 
             <input
               type="file"
               onChange={(e) => handleImageUpload(e.target.files[0])}
-              className="mb-3"
+              className="mb-3 text-slate-400"
             />
 
             {form.image && (
-              <img
-                src={form.image}
-                className="h-32 rounded-lg mb-3 object-cover"
-              />
+              <img src={form.image} className="h-28 rounded mb-3 object-cover" />
             )}
 
             <button
               onClick={handleSubmit}
               disabled={loading}
-              className="w-full bg-black hover:bg-gray-800 text-white py-3 rounded-xl mt-2"
+              className="w-full bg-[#212121] hover:bg-[#2a2a2a] text-white py-2 rounded-lg"
             >
               {loading ? 'Processing...' : 'Save Blog'}
             </button>
+
           </div>
         </div>
       )}

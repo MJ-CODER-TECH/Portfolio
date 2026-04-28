@@ -4,9 +4,6 @@ import {
   Mail,
   MailOpen,
   CheckCheck,
-  Clock,
-  ChevronDown,
-  ChevronUp,
   Search
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
@@ -16,17 +13,17 @@ const STATUS_CONFIG = {
   new: {
     label: 'New',
     icon: Mail,
-    style: 'bg-blue-500/10 text-blue-400 border-blue-500/20'
+    style: 'bg-[rgba(55,138,221,0.15)] text-[#5aabff]'
   },
   read: {
     label: 'Read',
     icon: MailOpen,
-    style: 'bg-slate-500/10 text-slate-300 border-slate-500/20'
+    style: 'bg-white/[0.05] text-slate-400'
   },
   replied: {
     label: 'Replied',
     icon: CheckCheck,
-    style: 'bg-green-500/10 text-green-400 border-green-500/20'
+    style: 'bg-[rgba(99,153,34,0.15)] text-[#8bc34a]'
   }
 };
 
@@ -36,7 +33,6 @@ export default function Contact() {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
-  const [expanded, setExpanded] = useState(null);
   const [search, setSearch] = useState('');
 
   const fetchContacts = async () => {
@@ -87,149 +83,140 @@ export default function Contact() {
   const newCount = contacts.filter(c => c.status === 'new').length;
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="animate-fade-in p-6">
 
       {/* HEADER */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex items-start justify-between flex-wrap gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white">Contact Messages</h1>
-          <p className="text-sm text-slate-500">
+          <h1 className="text-4xl font-bold text-white">Contact Messages</h1>
+          <p className="text-sm mt-1 text-slate-500">
             {contacts.length} total messages • {newCount} new
           </p>
         </div>
 
         {/* SEARCH */}
-        <div className="flex gap-3 items-center">
-          <div className="flex items-center gap-2 bg-dark-700 px-3 py-2 rounded-xl border border-dark-500">
-            <Search className="w-4 h-4 text-slate-400" />
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search name or email..."
-              className="bg-transparent outline-none text-sm text-white w-48"
-            />
-          </div>
+        <div className="flex items-center gap-2 bg-[#2a2a2a] px-4 py-2 rounded-lg border border-white/5 w-72">
+          <Search className="w-4 h-4 text-slate-600" />
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search name or email..."
+            className="bg-transparent outline-none text-sm text-white w-full placeholder:text-slate-600"
+          />
         </div>
       </div>
 
       {/* FILTERS */}
-      <div className="flex gap-2 flex-wrap">
+      <div className="flex gap-2 mb-4">
         {['all', 'new', 'read', 'replied'].map(f => (
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-4 py-1.5 rounded-xl text-sm font-medium border transition-all ${
+            className={`text-xs px-3 py-1.5 rounded-lg transition ${
               filter === f
-                ? 'bg-brand-500/15 text-brand-400 border-brand-500/30'
-                : 'bg-dark-700 text-slate-400 border-dark-500 hover:border-dark-400'
+                ? 'bg-[#212121] text-white'
+                : 'bg-[#2a2a2a] text-white/60 hover:bg-[#212121] hover:text-white'
             }`}
           >
-            {f.toUpperCase()}
+            {f}
           </button>
         ))}
       </div>
 
-      {/* LIST */}
+      {/* TABLE */}
       {loading ? (
-        <div className="space-y-3">
+        <div className="space-y-2">
           {[1,2,3,4].map(i => (
-            <div key={i} className="h-24 rounded-xl bg-dark-700 animate-pulse" />
+            <div key={i} className="h-14 rounded-lg animate-pulse bg-[#1a1a1a]" />
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="text-center py-16 text-slate-500">
-          No messages found
+        <div className="text-center py-16 rounded-xl border border-white/5 bg-[#1a1a1a]">
+          <p className="text-slate-500 text-sm">No messages found</p>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="rounded-xl border border-white/5 overflow-hidden bg-[#1a1a1a]">
+
+          {/* HEADER */}
+          <div className="grid grid-cols-7 px-4 py-3 border-b border-white/5 bg-[#111]">
+            {['Name', 'Email', 'Subject', 'Message', 'Date', 'Status', 'Action'].map(h => (
+              <span key={h} className="text-[11px] uppercase tracking-widest text-slate-600">
+                {h}
+              </span>
+            ))}
+          </div>
+
+          {/* ROWS */}
           {filtered.map(msg => {
             const cfg = STATUS_CONFIG[msg.status] || STATUS_CONFIG.new;
-            const Icon = cfg.icon;
-            const isOpen = expanded === msg._id;
 
             return (
               <div
                 key={msg._id}
-                className="bg-dark-800 border border-dark-600 rounded-2xl p-5 hover:border-dark-400 transition-all shadow-sm"
+                className="grid grid-cols-7 px-4 py-3 items-center border-b border-white/[0.04] hover:bg-white/[0.02] transition-colors last:border-none"
               >
 
-                {/* TOP */}
-                <div className="flex justify-between gap-4">
-
-                  {/* LEFT */}
-                  <div className="flex gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-dark-700 flex items-center justify-center border border-dark-500">
-                      <Icon className="w-4 h-4 text-slate-300" />
-                    </div>
-
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-white font-semibold text-sm">
-                          {msg.name || 'Unknown'}
-                        </h3>
-
-                        <span className={`text-xs px-2 py-0.5 rounded-lg border ${cfg.style}`}>
-                          {cfg.label}
-                        </span>
-                      </div>
-
-                      <p className="text-xs text-slate-400">{msg.email}</p>
-                      {msg.subject && (
-                        <p className="text-xs text-slate-500 mt-1">
-                          {msg.subject}
-                        </p>
-                      )}
-                    </div>
+                {/* NAME */}
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center text-[10px] text-white border border-white/10">
+                    {msg.name?.charAt(0) || 'U'}
                   </div>
-
-                  {/* RIGHT */}
-                  <div className="flex items-center gap-3 text-xs text-slate-500">
-                    <Clock className="w-3 h-3" />
-                    {new Date(msg.createdAt).toLocaleDateString('en-IN')}
-                  </div>
+                  <span className="text-[13px] text-slate-200">
+                    {msg.name || 'Unknown'}
+                  </span>
                 </div>
+
+                {/* EMAIL */}
+                <span className="text-[12px] text-slate-600 truncate">
+                  {msg.email}
+                </span>
+
+                {/* SUBJECT */}
+                <span className="text-[12px] text-slate-400 truncate">
+                  {msg.subject || '-'}
+                </span>
 
                 {/* MESSAGE */}
-                <div className="mt-3">
-                  <p className="text-sm text-slate-300 line-clamp-2">
-                    {isOpen ? msg.message : msg.message?.slice(0, 120)}
-                  </p>
+                <span className="text-[11px] text-slate-600 truncate">
+                  {msg.message?.slice(0, 40)}...
+                </span>
 
-                  <button
-                    onClick={() => setExpanded(isOpen ? null : msg._id)}
-                    className="text-xs text-brand-400 mt-2 flex items-center gap-1"
-                  >
-                    {isOpen ? (
-                      <>Show Less <ChevronUp className="w-3 h-3" /></>
-                    ) : (
-                      <>Read More <ChevronDown className="w-3 h-3" /></>
-                    )}
-                  </button>
-                </div>
+                {/* DATE */}
+                <span className="text-[12px] text-slate-600">
+                  {new Date(msg.createdAt).toLocaleDateString()}
+                </span>
 
-                {/* ACTIONS */}
-                <div className="flex items-center gap-2 mt-4 pt-3 border-t border-dark-600">
+                {/* STATUS */}
+                <span className="text-[11px] px-2 py-1 rounded-full w-fit" style={{
+                  background: cfg.style.includes('#5aabff')
+                    ? 'rgba(55,138,221,0.15)'
+                    : cfg.style.includes('#8bc34a')
+                    ? 'rgba(99,153,34,0.15)'
+                    : 'rgba(255,255,255,0.05)',
+                  color: cfg.style.includes('#5aabff')
+                    ? '#5aabff'
+                    : cfg.style.includes('#8bc34a')
+                    ? '#8bc34a'
+                    : '#aaa'
+                }}>
+                  {cfg.label}
+                </span>
 
+                {/* ACTION */}
+                <div className="flex gap-2">
                   <button
                     onClick={() => handleStatusUpdate(msg._id, msg.status)}
-                    className="px-3 py-1.5 text-xs rounded-lg bg-dark-700 hover:bg-dark-600 border border-dark-500 text-slate-300"
+                    className="w-7 h-7 rounded-md border border-white/10 flex items-center justify-center hover:bg-white/5"
                   >
-                    Change Status
+                    <Mail size={13} />
                   </button>
 
                   <button
                     onClick={() => handleDelete(msg._id)}
-                    className="px-3 py-1.5 text-xs rounded-lg bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20"
+                    className="w-7 h-7 rounded-md border border-white/10 flex items-center justify-center hover:bg-white/5 text-red-500"
                   >
-                    <Trash2 className="w-3 h-3 inline" /> Delete
+                    <Trash2 size={13} />
                   </button>
-
-                  <a
-                    href={`mailto:${msg.email}`}
-                    className="ml-auto text-xs text-brand-400 hover:underline"
-                  >
-                    Reply →
-                  </a>
                 </div>
 
               </div>
