@@ -20,6 +20,6 @@ export const getReviews = () => API.get('/reviews');
 export const getPlans = () => API.get('/plans');
 
 export const getBlogs = () => API.get('/blogs');
-
+export const getBlogById = (id) => API.get(`/blogs/${id}`);
 
 export default API;

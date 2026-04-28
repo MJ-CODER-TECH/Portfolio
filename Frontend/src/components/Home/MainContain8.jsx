@@ -3,9 +3,10 @@ import { motion, useInView } from "framer-motion";
 import SplitText from "../../Animation/SplitText";
 import RevealDelay from '../../Animation/RevealDelay';
 import { getReviews, getBlogs } from '../../services/api';
+import { useNavigate } from "react-router-dom";
 
 const MainContain8 = () => {
-
+const navigate = useNavigate();
   const containerRef = useRef()
   const title1Ref = useRef()
   const para1Ref = useRef()
@@ -134,8 +135,9 @@ useEffect(() => {
     </div>
   ) : (
     blogs.map((b, i) => (
-      <motion.div
-        key={b._id}
+    <motion.div
+  key={b._id}
+  onClick={() => navigate(`/blog-details/${b._id}`)} // 👈 ye add kar
         initial={{ opacity: 0, y: 30, scale: 0.95 }}
         animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
         transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1], delay: i * 0.1 }}

@@ -84,4 +84,25 @@ const deleteBlog = async (req, res, next) => {
   } catch (error) { next(error); }
 };
 
-module.exports = { getBlogs, getAllBlogsAdmin, createBlog, updateBlog, deleteBlog };
+// GET single blog by ID
+const getBlogById = async (req, res, next) => {
+  try {
+    const blog = await Blog.findById(req.params.id);
+
+    if (!blog) {
+      return res.status(404).json({
+        success: false,
+        message: 'Blog not found'
+      });
+    }
+
+    res.json({
+      success: true,
+      data: blog
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+module.exports = { getBlogs, getAllBlogsAdmin, createBlog, updateBlog, deleteBlog, getBlogById };

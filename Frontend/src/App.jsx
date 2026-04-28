@@ -11,6 +11,7 @@ import Pricing from './pages/Pricing'
 import ScrollToTop from './components/ScrollToTop'
 import PrivacyPolicy from './pages/Policy'
 import ProjectDetailsPage from './components/Project/ProjectDetailsPage'
+import BlogDetailsPage from './components/Blog/BloagDetailsPage'
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/project/:id" element={<ProjectDetailsPage />} />
+        <Route path="/blog-details/:id" element={<BlogDetailsPage />} />
 
       </Routes>
 
