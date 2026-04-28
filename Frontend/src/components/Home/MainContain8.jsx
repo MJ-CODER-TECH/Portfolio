@@ -43,19 +43,23 @@ useEffect(() => {
   return (
     <motion.div ref={containerRef} initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ duration: 0.6 }}>
 
-      {/* ================= TESTIMONIALS ================= */}
-      <section className="bg-black text-white py-20 px-20">
-        <div className="max-w-6xl mx-auto text-center mb-12">
-          <h2 ref={title1Ref} className="text-3xl md:text-4xl font-bold">
-           <SplitText>What our clients</SplitText>  <span className="text-green-400"><SplitText>say</SplitText></span> <SplitText>about our work</SplitText>
-          </h2>
-          <RevealDelay> <p ref={para1Ref} className="text-gray-400 mt-4 max-w-2xl mx-auto">
-            Real feedback from businesses we’ve helped build, scale, and optimize.
-          </p></RevealDelay>
-         
-        </div>
+    {/* ================= TESTIMONIALS ================= */}
+<section className="bg-black text-white py-16 md:py-20 px-4 sm:px-6 md:px-10 lg:px-20">
+  <div className="max-w-6xl mx-auto text-center mb-10 md:mb-12">
+    <h2 ref={title1Ref} className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight">
+      <SplitText>What our clients</SplitText>{" "}
+      <span className="text-green-400"><SplitText>say</SplitText></span>{" "}
+      <SplitText>about our work</SplitText>
+    </h2>
 
-        <div ref={cards1Ref} className="grid md:grid-cols-3 gap-6">
+    <RevealDelay>
+      <p ref={para1Ref} className="text-gray-400 mt-3 md:mt-4 max-w-2xl mx-auto text-sm md:text-base">
+        Real feedback from businesses we’ve helped build, scale, and optimize.
+      </p>
+    </RevealDelay>
+  </div>
+
+  <div ref={cards1Ref} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 md:gap-6">
 
   {revLoading ? (
     /* Loading skeleton */
@@ -111,20 +115,22 @@ useEffect(() => {
 </div>
       </section>
 
-      {/* ================= BLOG ================= */}
-      <section className="bg-black text-white py-20 px-20">
+   {/* ================= BLOG ================= */}
+<section className="bg-black text-white py-16 md:py-20 px-4 sm:px-6 md:px-10 lg:px-20">
 
-        <div className="max-w-6xl mx-auto mb-12 flex flex-col md:flex-row justify-between gap-6">
-          <h2 ref={title2Ref} className="text-3xl md:text-4xl font-bold max-w-lg">
-            Insights & articles <br /> from our tech team
-          </h2>
-<RevealDelay> <p ref={para2Ref} className="text-gray-400 max-w-md text-sm">
-            Explore our latest blogs on development, UI/UX, and scaling products.
-          </p></RevealDelay>
-         
-        </div>
+  <div className="max-w-6xl mx-auto mb-10 md:mb-12 flex flex-col md:flex-row justify-between gap-4 md:gap-6">
+    <h2 ref={title2Ref} className="text-2xl sm:text-3xl md:text-4xl font-bold max-w-lg leading-tight">
+      Insights & articles <br /> from our tech team
+    </h2>
 
-       <div ref={cards2Ref} className="grid md:grid-cols-3 gap-6">
+    <RevealDelay>
+      <p ref={para2Ref} className="text-gray-400 max-w-md text-sm md:text-base">
+        Explore our latest blogs on development, UI/UX, and scaling products.
+      </p>
+    </RevealDelay>
+  </div>
+
+  <div ref={cards2Ref} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 md:gap-6">
   {blogLoading ? (
     [1,2,3].map(i => (
       <div key={i} className="bg-[#111] rounded-xl h-64 animate-pulse" />
@@ -143,12 +149,12 @@ useEffect(() => {
         transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1], delay: i * 0.1 }}
         className="bg-[#111] rounded-xl overflow-hidden shadow-lg hover:border-white/30 hover:border transition-all duration-300"
       >
-        <img
-          src={b.image}
-          alt={b.title}
-          className="w-full h-48 object-cover"
-          onError={(e) => e.target.style.display = 'none'}
-        />
+      <img
+  src={b.image}
+  alt={b.title}
+  className="w-full h-40 sm:h-44 md:h-48 object-cover"
+  onError={(e) => e.target.style.display = 'none'}
+/>
         <div className="p-5">
           <div className="text-gray-400 text-sm flex gap-4 mb-2">
             {b.date && <span>📅 {b.date}</span>}
