@@ -16,7 +16,7 @@ const Footer = () => {
               <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center font-bold">
                 S
               </div>
-              <h2 className="text-xl font-semibold">SoftTech</h2>
+              <h2 className="text-xl font-semibold">MJ Coder</h2>
             </div>
 
             <p className="text-gray-400 text-sm">
