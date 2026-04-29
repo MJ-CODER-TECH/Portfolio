@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { NavLink } from 'react-router-dom'
 import { gsap } from "../../lib/gsap"
+import MobileMenu from '../Menu/Mobilemenu '
 
 const Navbar = () => {
   const navRef = useRef()
@@ -13,7 +14,6 @@ const Navbar = () => {
     }`
 
   useEffect(() => {
-    // Navbar entrance animation
     gsap.from(navRef.current, {
       y: -80,
       opacity: 0,
@@ -24,13 +24,11 @@ const Navbar = () => {
     let lastScroll = 0
     const handleScroll = () => {
       const currentScroll = window.scrollY
-
       if (currentScroll > lastScroll && currentScroll > 50) {
         gsap.to(navRef.current, { y: -80, duration: 0.3, ease: "power2.out" })
       } else {
         gsap.to(navRef.current, { y: 0, duration: 0.3, ease: "power2.out" })
       }
-
       lastScroll = currentScroll
     }
 
@@ -43,13 +41,12 @@ const Navbar = () => {
       ref={navRef}
       className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 md:px-20 h-16 bg-black/80 backdrop-blur-md border-b border-white/10"
     >
-
       {/* Logo */}
       <div className="text-xl font-semibold text-white">
         MJ <span className="text-green-400">Coder</span>
       </div>
 
-      {/* Links */}
+      {/* Desktop Links */}
       <ul className="hidden md:flex items-center gap-1 list-none m-0 p-0">
         <li><NavLink to="/" className={navClass}>Home</NavLink></li>
         <li><NavLink to="/services" className={navClass}>Services</NavLink></li>
@@ -58,18 +55,18 @@ const Navbar = () => {
         <li><NavLink to="/about" className={navClass}>About</NavLink></li>
       </ul>
 
-      {/* CTA Button */}
-      <NavLink to="/contact" className="hidden md:block bg-orange-500 hover:bg-orange-600 transition-all text-white text-sm font-medium rounded-full px-5 py-2">
+      {/* Desktop CTA */}
+      <NavLink
+        to="/contact"
+        className="hidden md:block bg-green-400 hover:bg-green-300 transition-all text-black text-sm font-bold rounded-full px-5 py-2"
+      >
         Contact
       </NavLink>
 
-      {/* Mobile Menu Icon */}
-      <div className="flex md:hidden flex-col gap-1.5 cursor-pointer">
-        <span className="w-6 h-0.5 bg-white rounded" />
-        <span className="w-6 h-0.5 bg-white rounded" />
-        <span className="w-6 h-0.5 bg-white rounded" />
+      {/* Mobile Menu — hamburger + panel sab andar hai */}
+      <div className="flex md:hidden">
+        <MobileMenu />
       </div>
-
     </nav>
   )
 }
