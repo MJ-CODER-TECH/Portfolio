@@ -12,11 +12,13 @@ import ScrollToTop from './components/ScrollToTop'
 import PrivacyPolicy from './pages/Policy'
 import ProjectDetailsPage from './components/Project/ProjectDetailsPage'
 import BlogDetailsPage from './components/Blog/BloagDetailsPage'
+import FloatingWhatsapp from './components/WhatsappIntegration/WTPIntegration'
 
 const App = () => {
   return (
     <BrowserRouter>
       <Toaster position="top-right" />
+      <FloatingWhatsapp />
       <ScrollToTop/>
       <Navbar />
       <Routes>
@@ -29,7 +31,6 @@ const App = () => {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/project/:id" element={<ProjectDetailsPage />} />
         <Route path="/blog-details/:id" element={<BlogDetailsPage />} />
-
       </Routes>
 
     </BrowserRouter>
