@@ -33,6 +33,18 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
+// Health Check Route
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "MJ CODER TECH AGENCY Backend is running",
+    status: "UP",
+    timestamp: new Date().toISOString(),
+  });
+});
+
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/plans', planRoutes);
